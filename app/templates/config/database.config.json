@@ -1,0 +1,31 @@
+{
+    "development": {
+        "database": "news",
+        "username": "duc",
+        "password": "123456",
+        "host": "localhost",
+        "port": 5432,
+        "ssl": false,
+        "pool":{
+            "max": 20,
+            "min": 4
+        },
+        "idleTimeoutMillis": 2000,
+        "schema": "public"
+        
+    },
+    "test": {
+        "database": "travis_ci_test",
+        "username": "postgres",
+        "password": null,
+        "host": "localhost",
+        "port": 5432,
+        "ssl": false,
+        "pool":{
+            "max": 20,
+            "min": 4
+        },
+        "idleTimeoutMillis": 2000,
+        "schema": "test"
+    }
+}

@@ -1,0 +1,51 @@
+// đây là vùng import tất cả các modules bên ngoài
+import { Router, Response, Request } from 'express';
+
+// import các module tạo table
+import { <%= table_name %>Repo } from '../repositories/<%= table_name.toLowerCase() %>.repo';
+
+
+
+
+export class <%= table_name %>Router {
+
+    private router: Router;
+    private <%= table_name %>Repo: <%= table_name %>Repo;
+
+    constructor() {
+        this.router = Router();
+        this.<%= table_name %>Repo = new <%= table_name %>Repo();
+    }
+
+
+    public getRouter(): Router {
+
+        this.router.route('/<%= table_name.toLowerCase() %>')
+            .get(this.getAll<%= table_name %>)
+            .post(this.createA<%= table_name %>)
+            .delete(this.deleteA<%= table_name %>);
+
+        return this.router;
+    }
+
+    private getAll<%= table_name %> = (req: Request, res: Response) => {
+    
+        this.<%= table_name %>Repo.getList()
+            .then(result => {
+                res.status(200).json(result)
+            })
+            .catch(error => {
+                console.error(error.message);
+                res.status(500).send(error.message)
+            })
+    }
+
+    private createA<%= table_name %> = (req, res) => {
+        res.send('created')
+    }
+
+    private deleteA<%= table_name %> = (req, res) => {
+        res.send('deleted')
+    }
+
+}

@@ -1,0 +1,13 @@
+{
+    "table_name": "Book",
+    "properties": [
+        {
+            "name": "name",
+            "type": "string"
+        },
+        {
+            "name": "author",
+            "type": "string"
+        }
+    ]
+}

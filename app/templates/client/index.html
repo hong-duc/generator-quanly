@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<title>Angular QuickStart</title>
+	<base href="/">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link href="/css/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/shop-homepage.css" rel="stylesheet">
+
+	<!--<link rel="stylesheet" href="styles.css">-->
+	<!-- 1. Load libraries -->
+	<!-- Polyfill(s) for older browsers -->
+	<script src="/scripts/shim.min.js"></script>
+	<script src="/scripts/zone.js"></script>
+	<script src="/scripts/Reflect.js"></script>
+	<script src="/scripts/system.src.js"></script>
+	<!-- Polyfill(s) for older browsers -->
+
+	<script src="/scripts/jquery/dist/jquery.js"></script>
+	<script src="/scripts/bootstrap/dist/js/bootstrap.js"></script>
+
+
+
+	<!-- 2. Configure SystemJS -->
+	<script src="/scripts/systemjs.config.js"></script>
+	<script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+
+
+	<!-- Page Content -->
+	<div class="container">
+
+		<my-app>Loading...</my-app>
+
+	</div>
+	<!-- /.container -->
+
+
+</body>
+
+</html>

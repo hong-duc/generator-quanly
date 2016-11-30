@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "declaration": false,
+        "noImplicitAny": false,
+        "removeComments": false,
+        "noLib": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include":[
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "gulpclass.ts",
+        "dist",
+        ".vscode",
+        "src/app/repositories/sequelize.model.ts",
+        "src/scripts/mock-data.ts",
+        "src/scripts/drop-all.ts",
+        "src/app/routes/writer.router.ts"
+    ]
+}
