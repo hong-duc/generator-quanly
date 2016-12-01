@@ -10,8 +10,25 @@ module.exports = generators.Base.extend({
 
         // this.appname = _.camelCase(this.appname);
     },
-    _private_method: function() {
-        console.log('private hey');
+    _copyTemplateHelper: function(files) {
+        files.forEach(file => {
+            this.fs.copyTpl(
+                this.templatePath(file[0]),
+                this.destinationPath(file[1]),
+                file[2]
+            );
+        })
+    },
+    _copyHelper: function(files) {
+        files.forEach(file => {
+            this.fs.copy(
+                this.templatePath(file[0]),
+                this.destinationPath(file[1])
+            )
+        });
+    },
+    _capitalizeFirstLetter: function(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
     },
     initializing: function() {
         console.log('init run')
@@ -34,26 +51,48 @@ module.exports = generators.Base.extend({
     },
     writing: function() {
 
-        let entity = JSON.parse(this.fs.read(this.filepath));
 
 
-        this.fs.copyTpl(
-            this.templatePath('api/routes/template.router.ejs'),
-            this.destinationPath('src/api/routes/' + entity.table_name.toLowerCase() + '.router.ts'),
-            entity
-        );
+        let option = JSON.parse(this.fs.read(this.filepath));
 
-        this.fs.copyTpl(
-            this.templatePath('api/repositories/template.repo.ejs'),
-            this.destinationPath('src/api/repositories/' + entity.table_name.toLowerCase() + '.repo.ts'),
-            entity
-        );
+        option.tables.forEach(table => {
 
-        this.fs.copyTpl(
-            this.templatePath('api/models/template.model.ejs'),
-            this.destinationPath('src/api/models/' + entity.table_name.toLowerCase() + '.model.ts'),
-            entity
-        );
+            let clientDirDes = `src/client/app/${table.name.toLowerCase()}s`;
+            let clientDirTemp = 'client/app/products/';
+
+            table.name = this._capitalizeFirstLetter(table.name);
+
+            let config = {table: table, features: option.features};
+
+            this._copyTemplateHelper([
+                // copy template router
+                ['api/routes/template.router.ejs', `src/api/routes/${table.name.toLowerCase()}.router.ts`, config],
+                // copy template repo
+                ['api/repositories/template.repo.ejs', `src/api/repositories/${table.name.toLowerCase()}.repo.ts`, config],
+                // copy template model
+                ['api/models/template.model.ejs', `src/api/models/${table.name.toLowerCase()}.model.ts`, config],
+                // copy template list
+                [`${clientDirTemp}/product-list/product-list.component.ejs`, `${clientDirDes}/${table.name.toLowerCase()}-list/${table.name.toLowerCase()}-list.component.ts`, config],
+                // copy template list html
+                [`${clientDirTemp}/product-list/product-list.component.html`, `${clientDirDes}/${table.name.toLowerCase()}-list/${table.name.toLowerCase()}-list.component.html`, config],
+                // copy tempalte detail modal
+                [`${clientDirTemp}/product-detail-modal/product-detail-modal.component.ejs`, `${clientDirDes}/${table.name.toLowerCase()}-detail-modal/${table.name.toLowerCase()}-detail-modal.component.ts`, config],
+                // copy tempate detail modal html
+                [`${clientDirTemp}/product-detail-modal/product-detail-modal.component.html`, `${clientDirDes}/${table.name.toLowerCase()}-detail-modal/${table.name.toLowerCase()}-detail-modal.component.html`, config],
+                // copy tempate filter pipe
+                [`${clientDirTemp}/product-filter/product-filter.pipe.ejs`, `${clientDirDes}/${table.name.toLowerCase()}-filter/${table.name.toLowerCase()}-filter.pipe.ts`, config],
+                // copy tempalte product model
+                [`${clientDirTemp}/shared/product.model.ejs`, `${clientDirDes}/shared/${table.name.toLowerCase()}.model.ts`, config],
+                // copy template service
+                [`${clientDirTemp}/shared/product.service.ejs`, `${clientDirDes}/shared/${table.name.toLowerCase()}.service.ts`, config]
+            ]);
+
+            this._copyHelper([
+                [`${clientDirTemp}/product-list/product-list.component.css`, `${clientDirDes}/${table.name.toLowerCase()}-list/${table.name.toLowerCase()}-list.component.css`]
+            ])
+        });
+
+
     },
     end: function() {
         console.log('end');

@@ -1,0 +1,28 @@
+import { Component } from '@angular/core';
+
+import { DialogRef, ModalComponent, CloseGuard } from 'angular2-modal';
+import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
+
+import { <%= table.name %> } from '../shared/<%= table.name.toLowerCase() %>.model';
+
+export class <%= table.name %>DetailModalContext extends BSModalContext {
+    <%= table.name.toLowerCase() %>: <%= table.name %>;
+}
+
+@Component({
+    selector: 'modal-content',
+    templateUrl: '/<%= table.name.toLowerCase() %>s/<%= table.name.toLowerCase() %>-detail-modal/<%= table.name.toLowerCase() %>-detail-modal.html'
+})
+export class <%= table.name %>DetailModal implements CloseGuard, ModalComponent<<%= table.name %>DetailModalContext>{
+    context: <%= table.name %>DetailModalContext;
+
+    constructor(
+        public dialog: DialogRef<<%= table.name %>DetailModalContext>
+    ) {
+        this.context = dialog.context;       
+    }
+
+    onBack() {
+        this.dialog.close();
+    }
+}

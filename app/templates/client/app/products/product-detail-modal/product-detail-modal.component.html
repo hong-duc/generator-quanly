@@ -1,0 +1,20 @@
+<div class='panel panel-primary' *ngIf='context.<%= table.name %>'>
+    <div class='panel-body'>
+        <div class='row'>
+            <div class='col-md-6'>
+                <% table.fields.forEach(p => { %>
+                <div class='row'>
+                        <div class='col-md-3'><%= p.name %>:</div>
+                        <div class='col-md-6'>{{context.<%= table.name %>.<%= p.name %>}}</div>
+                </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <div class='panel-footer'>
+        <a class='btn btn-default' (click)='onBack()' style='width:80px'>
+            <i class='glyphicon glyphicon-chevron-left'></i> Back
+        </a>
+    </div>
+</div>

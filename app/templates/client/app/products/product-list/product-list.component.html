@@ -4,7 +4,7 @@
 		{{pageTitle}}
 	</div>
 
-	<!-- Filter the Products   -->
+	<!-- Filter the <%= table.name.toLowerCase() %>s   -->
 	<div class='panel-body'>
 		<div class='row'>
 			<div class='col-md-2'>Filter by:</div>
@@ -18,76 +18,32 @@
 			</div>
 		</div>
 
-		<div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
-		<sk-cube-grid [isRunning]="isRequest"></sk-cube-grid>
+		<div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>\
+
 		<div class='table-responsive'>
 			<table class='table'>
 				<thead>
 					<tr>
-						<th>
-							<button class='btn btn-primary' (click)='toggleImage()'>
-                                {{showImage ? 'Hide' : 'Show'}} Image
-                            </button>
-						</th>
-						<th>Product</th>
-						<th>Code</th>
-						<th>Available</th>
-						<th>Price</th>
-						<th>5 Star Rating</th>
+						<th><%= table.name %></th>
+						<% table.fields.forEach(p => { %>
+							<th><%= p.name %></th>
+						<% }) %>
 					</tr>
 				</thead>
 				<tbody>
-					<tr *ngFor='let product of products | productFilter:listFilter | async | paginate: {itemsPerPage: 2, currentPage: p}'>
+					<tr *ngFor='let <%= table.name.toLowerCase() %> of <%= table.name.toLowerCase() %>s | <%= table.name %>Filter:listFilter | async '>
 						<td>
-							<input type="checkbox" (click)="onCheck(product)" [(ngModel)]="product.isChecked" />
-							<!--<input type="checkbox"/>-->
+							<input type="checkbox" (click)="onCheck(<%= table.name.toLowerCase() %>)" [(ngModel)]="<%= table.name.toLowerCase() %>.isChecked" />
 						</td>
 						<td>
-							<img *ngIf='showImage' [src]='product.imageUrl' [title]='product.productName | uppercase' [style.width.px]='imageWidth' [style.margin.px]='imageMargin'>
+							<a href="javascript:;" (click)="show<%= table.name %>DetailModal(<%= table.name.toLowerCase() %>)">{{<%= table.name.toLowerCase() %>.<%= table.fields[0].name.toLowerCase() %>}}</a>
 						</td>
-						<!--<td> <a [routerLink]="['/product',product.productId]">
-                            {{product.productName}}
-                            </a>
-                        </td>-->
-
-						<td>
-							<a href="javascript:;" (click)="showProductDetailModal(product)">{{product.productName}}</a>
-						</td>
-
-						<td>{{ product.productCode | lowercase }}</td>
-						<td>{{ product.releaseDate }}</td>
-						<td>{{ product.price | currency:'USD':true:'1.2-2' }}</td>
-						<td>
-							<ai-star [rating]='product.starRating' (ratingClicked)='onRatingClicked($event)'>
-							</ai-star>
-						</td>
+						<% for(var i = 1; i < table.fields.length ; i++){ %>
+							<td>{{ <%= table.name.toLowerCase() %>.<%= table.fields[i].name %> }}</td>	
+						<% } %>
 					</tr>
 				</tbody>
 			</table>
-			<pagination-controls #pagination (pageChange)="p = $event">
-				<nav aria-label="Page navigation">
-					<ul class="pagination">
-						<li [class.disabled]="pagination.isFirstPage()">
-							<a aria-label="Previous" (click)="pagination.previous()" href="javascript:;" *ngIf="!pagination.isFirstPage()">
-								<span>&laquo;</span>
-							</a>
-						</li>
-						<li *ngFor="let page of pagination.pages" [class.active]="pagination.getCurrent() == page.value">
-							<a (click)="pagination.setCurrent(page.value)" href="javascript:;">
-                                {{page.label}}
-                            </a>
-							<!--<div *ngIf="pagination.getCurrent() === page.value">
-								<span>{{ page.label }}</span>
-							</div>-->
-						</li>
-						<li [class.disabled]="pagination.isLastPage()" *ngIf="pagination.directionLinks">
-							<a aria-label="Next" href="javascript:;" (click)="pagination.next()" *ngIf="!pagination.isLastPage()">
-								<span>&raquo;</span>
-							</a>
-						</li>
-					</ul>
-				</nav>
-			</pagination-controls>
 		</div>
 	</div>
 </div>

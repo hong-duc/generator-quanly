@@ -1,8 +1,8 @@
 import { RepoBase } from './repositories.base';
-import { <%= table_name %> } from '../models/<%= table_name.toLowerCase() %>.model'
+import { <%= table.name %> } from '../models/<%= table.name.toLowerCase() %>.model'
 import { Pool, QueryResult } from 'pg';
 
-export class <%= table_name %>Repo extends RepoBase {
+export class <%= table.name %>Repo extends RepoBase {
 
     constructor() {
         super();
@@ -11,8 +11,8 @@ export class <%= table_name %>Repo extends RepoBase {
     /**
      * lấy tất cá, hoặc 1 phần của danh sách dữ liệu book từ csdl
      */
-    public getList(): Promise<<%= table_name %>[]> {
-        let queryText = 'select * from <%= table_name.toLowerCase() %>s';
+    public getList(): Promise<<%= table.name %>[]> {
+        let queryText = 'select * from <%= table.name.toLowerCase() %>s';
 
         console.info('Excute: ' + queryText);
         let pResult;
@@ -21,14 +21,14 @@ export class <%= table_name %>Repo extends RepoBase {
 
 
         return pResult.then(result => {
-            let <%= table_name.toLowerCase() %>s: <%= table_name %>[] = result.rows.map(r => {
-                let <%= table_name.toLowerCase() %> = new <%= table_name %>();
-                <% properties.forEach(p => { %> 
-                    <%= table_name.toLowerCase() %>.<%= p.name %> = r.<%= p.name %>;
+            let <%= table.name.toLowerCase() %>s: <%= table.name %>[] = result.rows.map(r => {
+                let <%= table.name.toLowerCase() %> = new <%= table.name %>();
+                <% table.fields.forEach(p => { %> 
+                    <%= table.name.toLowerCase() %>.<%= p.name %> = r.<%= p.name %>;
                 <% } ); %>
-                return <%= table_name.toLowerCase() %>;
+                return <%= table.name.toLowerCase() %>;
             });
-            return <%= table_name.toLowerCase() %>s;
+            return <%= table.name.toLowerCase() %>s;
         })
             .catch(err => {
                 console.error(err.message);
@@ -36,18 +36,18 @@ export class <%= table_name %>Repo extends RepoBase {
             });
     }
 
-    public getOneById(id): Promise<<%= table_name %>> {
-        let queryText = 'select * from test.<%= table_name.toLowerCase() %>s where id=$1';
+    public getOneById(id): Promise<<%= table.name %>> {
+        let queryText = 'select * from test.<%= table.name.toLowerCase() %>s where id=$1';
 
         console.info('Excute: ' + queryText);
 
         return this._pgPool.query(queryText,id)
             .then(result => {
-                let <%= table_name.toLowerCase() %> = new <%= table_name %>();
-                <% properties.forEach(p => { %> 
-                    <%= table_name.toLowerCase() %>.<%= p.name %> = result.<%= p.name %>;
+                let <%= table.name.toLowerCase() %> = new <%= table.name %>();
+                <% table.fields.forEach(p => { %> 
+                    <%= table.name.toLowerCase() %>.<%= p.name %> = result.<%= p.name %>;
                 <% } ); %>
-                return <%= table_name.toLowerCase() %>;
+                return <%= table.name.toLowerCase() %>;
             });
     }
 }

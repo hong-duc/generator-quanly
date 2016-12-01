@@ -2,35 +2,39 @@
 import { Router, Response, Request } from 'express';
 
 // import các module tạo table
-import { <%= table_name %>Repo } from '../repositories/<%= table_name.toLowerCase() %>.repo';
+import { <%= table.name %>Repo } from '../repositories/<%= table.name.toLowerCase() %>.repo';
 
 
 
 
-export class <%= table_name %>Router {
+export class <%= table.name %>Router {
 
     private router: Router;
-    private <%= table_name %>Repo: <%= table_name %>Repo;
+    private <%= table.name %>Repo: <%= table.name %>Repo;
 
     constructor() {
         this.router = Router();
-        this.<%= table_name %>Repo = new <%= table_name %>Repo();
+        this.<%= table.name %>Repo = new <%= table.name %>Repo();
     }
 
 
     public getRouter(): Router {
 
-        this.router.route('/<%= table_name.toLowerCase() %>')
-            .get(this.getAll<%= table_name %>)
-            .post(this.createA<%= table_name %>)
-            .delete(this.deleteA<%= table_name %>);
+        this.router.route('/<%= table.name.toLowerCase() %>')
+            .get(this.getAll<%= table.name %>)
+            <% if(features.themMoi){ %>
+            .post(this.createA<%= table.name %>)
+            <% } %>
+            <% if(features.xoa){ %>
+            .delete(this.deleteA<%= table.name %>);
+            <% } %>
 
         return this.router;
     }
 
-    private getAll<%= table_name %> = (req: Request, res: Response) => {
+    private getAll<%= table.name %> = (req: Request, res: Response) => {
     
-        this.<%= table_name %>Repo.getList()
+        this.<%= table.name %>Repo.getList()
             .then(result => {
                 res.status(200).json(result)
             })
@@ -40,12 +44,15 @@ export class <%= table_name %>Router {
             })
     }
 
-    private createA<%= table_name %> = (req, res) => {
+     <% if(features.themMoi){ %>
+    private createA<%= table.name %> = (req, res) => {
         res.send('created')
     }
-
-    private deleteA<%= table_name %> = (req, res) => {
+      <% } %>
+     <% if(features.xoa){ %>
+    private deleteA<%= table.name %> = (req, res) => {
         res.send('deleted')
     }
+      <% } %>
 
 }

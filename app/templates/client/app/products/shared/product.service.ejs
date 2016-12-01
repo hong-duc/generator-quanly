@@ -1,0 +1,42 @@
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+
+import { <%= table.name %> } from './<%= table.name.toLowerCase() %>.model';
+
+@Injectable()
+export class <%= table.name %>Service {
+
+    constructor(private _http: Http) { }
+
+    get<%= table.name %>s(): Promise<<%= table.name %>[]> {
+        return this._http.get('/api/<%= table.name %>')
+            .toPromise()
+            .then(response => response.json() as <%= table.name %>[])
+            .catch(this.handleError);
+    }
+
+    <% if(features.themMoi){ %>
+    add(value: <%= table.name %>){
+        return this._http.post('/api/<%= table.name %>',value)
+            .toPromise()
+            .then(response => value)
+            .catch(this.handleError);
+    }
+    <% } %>
+
+    <% if(features.xoa){ %>
+    delete(id: number){
+        return this._http.delete('/api/<%= table.name %>?id=' + id)
+            .toPromise()
+            .then(response => value)
+            .catch(this.handleError);
+    }
+    <% } %>
+
+    private handleError(error: Error): Promise<any> {
+        console.error(error);
+        return Promise.reject(error.message || error);
+
+    }
+}

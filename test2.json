@@ -1,0 +1,23 @@
+{
+    "tables": [
+        {
+            "name": "book",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "string",
+                    "isPrimaryKey": true
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                }
+            ]
+        }
+    ],
+    "features": {
+        "listAndDetail": true,
+        "themMoi": false,
+        "xoa": false
+    }
+}

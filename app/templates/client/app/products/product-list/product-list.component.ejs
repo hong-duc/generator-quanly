@@ -2,63 +2,63 @@ import { Component, OnInit } from '@angular/core';
 
 import { Overlay, overlayConfigFactory } from 'angular2-modal';
 import { Modal, BSModalContext } from 'angular2-modal/plugins/bootstrap';
-import { <%= table-name %>DetailModal, <%= table-name %>DetailModalContext } from '../<%= table-name.toLowerCase() %>-detail-modal/<%= table-name.toLowerCase() %>-detail-modal.component';
+import { <%= table.name %>DetailModal, <%= table.name %>DetailModalContext } from '../<%= table.name.toLowerCase() %>-detail-modal/<%= table.name.toLowerCase() %>-detail-modal.component';
 
 
-import { Product } from '../shared/product.model';
-import { ProductFilterPipe } from '../product-filter/product-filter.pipe';
+import { <%= table.name %> } from '../shared/<%= table.name.toLowerCase() %>.model';
+import { <%= table.name %>FilterPipe } from '../<%= table.name.toLowerCase() %>-filter/<%= table.name.toLowerCase() %>-filter.pipe';
 import { StarComponent } from '../../shared/star.component';
-import { ProductService } from '../shared/product.service';
+import { <%= table.name %>Service } from '../shared/<%= table.name.toLowerCase() %>.service';
 
 @Component({
-    templateUrl: '/products/product-list/product-list.component.html',
-    styleUrls: ['/products/product-list/product-list.component.css'],
+    templateUrl: '/<%= table.name.toLowerCase() %>s/<%= table.name.toLowerCase() %>-list/<%= table.name.toLowerCase() %>-list.component.html',
+    styleUrls: ['/<%= table.name.toLowerCase() %>s/<%= table.name.toLowerCase() %>-list/<%= table.name.toLowerCase() %>-list.component.css'],
     providers: [Modal]
 })
-export class ProductListComponent implements OnInit {
-    pageTitle: string = 'Product List';
-    imageWidth: number = 50;
-    imageMargin: number = 2;
-    showImage: boolean = false;
+export class <%= table.name %>ListComponent implements OnInit {
+    pageTitle: string = '<%= table.name %> List';
     listFilter: string = '';
     errorMessage: string;
-    products: Promise<Product[]>;
+    <%= table.name.toLowerCase() %>s: Promise<<%= table.name %>[]>;
     checked: any[] = [];
-    isRequest: boolean = false;
 
 
     constructor(
-        private _productService: ProductService,
+        private <%= table.name.toLowerCase() %>Service: <%= table.name %>Service,
         private modal: Modal) {
 
     }
 
-    toggleImage(): void {
-        this.showImage = !this.showImage;
-    }
-
     ngOnInit(): void {
-        this.products = this._productService.getProducts();
-
-        setTimeout(() => {
-            this.isRequest = false;
-        }, 3000)
+        this.<%= table.name.toLowerCase() %>s = this.<%= table.name.toLowerCase() %>Service.get<%= table.name %>s();
     }
 
     onRatingClicked(message: string): void {
         this.pageTitle = 'Product List: ' + message;
     }
 
-    showProductDetailModal(product: Product) {
-        this.modal.open(ProduceDetailModal, overlayConfigFactory({ product }, BSModalContext))
+    show<%= table.name %>DetailModal(<%= table.name.toLowerCase() %>: <%= table.name %>) {
+        this.modal.open(<%= table.name %>DetailModal, overlayConfigFactory({ <%= table.name.toLowerCase() %> }, BSModalContext))
     }
 
-    onCheck(product: Product) {
-        this.checked.push[product.productId];
-        product.isCheked = true;
+    onCheck(<%= table.name.toLowerCase() %>: <%= table.name %>) {
+        this.checked.push[<%= table.name.toLowerCase() %>.<%= table.fields[0].name %>];
+        <%= table.name.toLowerCase() %>.isChecked = true;
     }
 
-    isChecked(product: Product): boolean {
-        return this.checked.some(id => id === product.productId);
+    isChecked(<%= table.name.toLowerCase() %>: <%= table.name %>): boolean {
+        return this.checked.some(id => id === <%= table.name.toLowerCase() %>.<%= table.fields[0].name %>);
     }
+
+    <% if(features.themMoi){ %>
+    add<%= table.name.toLowerCase()  %>(value: <%= table.name %>){
+        this.<%= table.name.toLowerCase() %>Service.add(value);
+    }
+    <% } %>
+
+    <% if(features.xoa){ %>
+    deleteByID<%= table.name.toLowerCase()  %>(id: number){
+        this.<%= table.name.toLowerCase() %>Service.delete(id);
+    }
+    <% } %>
 }

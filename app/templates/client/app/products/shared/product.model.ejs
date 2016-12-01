@@ -1,0 +1,8 @@
+/* Defines the <%= table.name %> entity */
+export class <%= table.name %> {
+    <% table.fields.forEach(p => { %>
+        <%= p.name %>: <%= p.type %>;
+    <% }) %>
+    isChecked: boolean;
+}
+

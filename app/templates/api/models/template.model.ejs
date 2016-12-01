@@ -1,8 +1,8 @@
 import { ModelBase } from './model.base';
 
 
-export class <%= table_name %> extends ModelBase {
-    <% properties.forEach(p => { %> 
+export class <%= table.name %> extends ModelBase {
+    <% table.fields.forEach(p => { %> 
         <%= p.name %>: <%= p.type %>;
     <% } ); %>
 }
